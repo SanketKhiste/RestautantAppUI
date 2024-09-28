@@ -2,12 +2,19 @@ import * as React from 'react';
 import { Box, TextField, Button, Typography, Card, CardContent, CardActions, Grid } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
+import 'material-react-toastify/dist/ReactToastify.css';
 const APIBaseUrl = process.env.REACT_APP_APIBASEURL;
 const AppBaseUrl = process.env.REACT_APP_BASEURL;
 
 
 const SignUpForm = () => {
-
+  // Toaster Example
+  // toast("It's that easy");
+  // toast.success('to create');
+  // toast.error('different types');
+  // toast.dark('of notifications.');
+  // toast.warning('You just need to');
+  // toast.info('execute one of these functions');
       // State for form fields (optional for future use)
   const [formData, setFormData] = React.useState({
     firstName: '',
