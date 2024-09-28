@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Box, TextField, Button, Typography, Card, CardContent, CardActions, Grid } from '@mui/material';
 import { NavLink } from 'react-router-dom';
-import axios from 'axios';
+import axios from 'axios';import { ToastContainer, toast } from 'material-react-toastify';
 import 'material-react-toastify/dist/ReactToastify.css';
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 const APIBaseUrl = process.env.REACT_APP_APIBASEURL;
 const AppBaseUrl = process.env.REACT_APP_BASEURL;
 
@@ -41,6 +42,11 @@ const SignUpForm = () => {
   const SubmitData = () => {
     debugger;
     console.log("data:",formData);
+    if(formData.firstName == '')
+    {
+      toast.error('Please enter first name');
+      return false;
+    }
     const data = {
       "customerID":0,
       "firstName": formData.firstName,
@@ -51,6 +57,7 @@ const SignUpForm = () => {
     }
     axios.post(`${APIBaseUrl}Customer/CustomerDetail`,data)
     .then((result) => {
+      debugger;
      console.WriteLine(result.data);
     }).catch((error) => {
       console.log(error.message);
@@ -111,7 +118,11 @@ const SignUpForm = () => {
 
               {/* Email Field */}
               <Grid item xs={12} sm={6}>
-                <TextField
+              <ValidatorForm
+                  onSubmit={handleSubmit}
+                  onError={errors => console.log(errors)}
+              >
+                <TextValidator
                   required
                   type="email"
                   label="Email"
@@ -120,8 +131,10 @@ const SignUpForm = () => {
                   onChange={handleChange}
                   variant="outlined"
                   fullWidth
-                  helperText="Please enter a valid email address"
+                  validators={['required', 'isEmail']}
+                  errorMessages={['this field is required', 'email is not valid']}
                 />
+              </ValidatorForm>
               </Grid>
 
               {/* Phone Number Field */}
@@ -174,6 +187,7 @@ const SignUpForm = () => {
           </NavLink>
         </Typography>
       </Card>
+      <ToastContainer />
     </Box>
   )
 }
