@@ -44,7 +44,7 @@ const SignUpForm = () => {
     console.log("data:",formData);
     if(formData.firstName == '')
     {
-      toast.error('Please enter first name');
+      toast.success('Please enter first name');
       return false;
     }
     const data = {
@@ -58,6 +58,7 @@ const SignUpForm = () => {
     axios.post(`${APIBaseUrl}Customer/CustomerDetail`,data)
     .then((result) => {
       debugger;
+      toast.error(result.data.message);
      console.WriteLine(result.data);
     }).catch((error) => {
       console.log(error.message);
