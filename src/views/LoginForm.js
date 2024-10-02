@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { TextField, Button, Grid, Typography, Paper, Link, FormControlLabel, Checkbox } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
+import { ToastContainer, toast } from 'material-react-toastify';
+const APIBaseUrl = process.env.REACT_APP_APIBASEURL;
+const AppBaseUrl = process.env.REACT_APP_BASEURL;
 
 const LoginForm = () => {
 
@@ -21,6 +25,27 @@ const LoginForm = () => {
         e.preventDefault();
         // Handle login logic
         console.log('Form data submitted:', formData);
+      };
+
+      const Login = () => {
+        debugger;
+        console.log("data:",formData);
+        if(formData.firstName == '')
+        {
+          toast.success('Please enter first name');
+          return false;
+        }
+        const data = {
+          "email": formData.email
+        }
+        axios.post(`${APIBaseUrl}Login/LoginDetails`,data)
+        .then((result) => {
+          debugger;
+          toast.error(result.data.responseObject.firstName);
+         console.WriteLine(result.data);
+        }).catch((error) => {
+          console.log(error.message);
+        });
       };
 
   return (
@@ -83,6 +108,7 @@ const LoginForm = () => {
               color="primary"
               fullWidth
               style={{ marginTop: '20px' }}
+              onClick={()=>Login()}
             >
               Login
             </Button>

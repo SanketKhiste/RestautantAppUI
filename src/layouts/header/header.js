@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -48,6 +48,8 @@ const Header = () => {
     setAnchorEl(null);
   };
 
+  const [icon, setIcon] = useState(false);
+
   return (
     <>
       {/* AppBar containing MenuIcon, title, and Login icon */}
@@ -75,14 +77,14 @@ const Header = () => {
           </IconButton>
 
           {/* Login Icon Button on the top-right corner */}
-          <IconButton
+          {icon && <IconButton
             edge="end"
             color="inherit"
             aria-label="account"
             onClick={handleLoginMenuOpen}  // Opens the login menu on click
           >
             <AccountCircle />
-          </IconButton>
+          </IconButton>}
         </Toolbar>
       </AppBar>
 
@@ -92,7 +94,7 @@ const Header = () => {
         open={isLoginMenuOpen}
         onClose={handleLoginMenuClose}
       >
-        <MenuItem disabled>John Doe</MenuItem>  {/* Replace with dynamic username */}
+        <MenuItem>John Doe</MenuItem>  {/* Replace with dynamic username */}
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
 
