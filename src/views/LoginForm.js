@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { TextField, Button, Grid, Typography, Paper, Link, FormControlLabel, Checkbox } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { NavLink,Navigate,useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'material-react-toastify';
 const APIBaseUrl = process.env.REACT_APP_APIBASEURL;
 const AppBaseUrl = process.env.REACT_APP_BASEURL;
 
 const LoginForm = () => {
+  const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         email: '',
@@ -36,13 +37,19 @@ const LoginForm = () => {
           return false;
         }
         const data = {
-          "email": formData.email
+          "userName": formData.email,
+          "password": formData.password
         }
         axios.post(`${APIBaseUrl}Login/LoginDetails`,data)
         .then((result) => {
           debugger;
           toast.error(result.data.responseObject.firstName);
-         console.WriteLine(result.data);
+         console.log(result.data);
+        if(result.data.responseObject.rolename == 'Admin')
+        {
+          navigate("/RestaurantForm");
+          sessionStorage.setItem("user", JSON.stringify(result.data.responseObject));
+        }
         }).catch((error) => {
           console.log(error.message);
         });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect  } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -20,11 +20,23 @@ import Brightness7 from '@mui/icons-material/Brightness7';
 import { useTheme } from './ThemeProvider';  // Import the useTheme hook
 
 const Header = () => {
+  debugger;
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isRestaurantSubmenuOpen, setIsRestaurantSubmenuOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);  // State for the login menu
   const isLoginMenuOpen = Boolean(anchorEl);
   const { isDarkMode, toggleDarkMode } = useTheme(); // Get the theme context
+  //const userData = JSON.parse(sessionStorage.getItem("user"));
+  const [userData, setUserData] = useState(null);
+  const [icon, setIcon] = useState(false);
+
+  useEffect(() => {
+    const storedUserData = sessionStorage.getItem("user");
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+      setIcon(true);
+    }
+  });
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -45,10 +57,9 @@ const Header = () => {
   const handleLogout = () => {
     console.log('Logout clicked');
     // Implement logout functionality here
+    sessionStorage.clear();
     setAnchorEl(null);
   };
-
-  const [icon, setIcon] = useState(false);
 
   return (
     <>
@@ -64,7 +75,7 @@ const Header = () => {
             {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Dynamic Header
+            Restaurant App
           </Typography>
 
           {/* Dark mode toggle button */}
@@ -89,14 +100,16 @@ const Header = () => {
       </AppBar>
 
       {/* Login Menu displaying username and logout option */}
-      <Menu
-        anchorEl={anchorEl}
-        open={isLoginMenuOpen}
-        onClose={handleLoginMenuClose}
-      >
-        <MenuItem>John Doe</MenuItem>  {/* Replace with dynamic username */}
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
-      </Menu>
+      {userData && (
+        <Menu
+          anchorEl={anchorEl}
+          open={isLoginMenuOpen}
+          onClose={handleLoginMenuClose}
+        >
+          <MenuItem>{userData.firstName || userData.lastName}</MenuItem>
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        </Menu>
+      )}
 
       {/* Drawer that slides in from the left */}
       <Drawer anchor="left" open={isMenuOpen} onClose={handleMenuToggle}>

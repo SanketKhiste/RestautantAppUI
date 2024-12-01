@@ -59,8 +59,8 @@ const SignUpForm = () => {
     axios.post(`${APIBaseUrl}Customer/CustomerDetail`,data)
     .then((result) => {
       debugger;
-      toast.error(result.data.message);
-     console.WriteLine(result.data);
+      toast.success(result.data.message);
+      console.WriteLine(result.data);
     }).catch((error) => {
       console.log(error.message);
     });
